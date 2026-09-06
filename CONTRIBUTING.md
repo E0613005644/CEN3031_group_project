@@ -1,0 +1,9 @@
+- The main branch contains the correct and approved version of the project.
+- We will not be developing features directly on the "main" branch.
+- A separate branch will be created for each feature, fix, or documentation task.
+- Descriptive branch names will be used, for example "fix/calendar-error" or "feature/login-page"
+- For each commit, a clear message will be written explaining the change
+- A pull request will be opened when a branch is ready to be reviewed.
+- At least one other member of the team will review and approve the pull request before it is merged into main.
+- Record planned work using the GitHub Project board.
+- Move tasks between Todo, In Progress, and Done to keep track of progress.
