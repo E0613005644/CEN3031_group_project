@@ -1,0 +1,108 @@
+team_id,first_name,last_name,role,position,registered
+JAX-P001,Ameer,Abdullah,player,RB,FALSE
+JAX-P002,LeQuint,Allen Jr.,player,RB,FALSE
+JAX-P003,Arik,Armstead,player,DT,FALSE
+JAX-P004,Nate,Boerkircher,player,TE,FALSE
+JAX-P005,Montaric,Brown,player,CB,FALSE
+JAX-P006,Josh,Cameron,player,WR,FALSE
+JAX-P007,Ezra,Cleveland,player,OL,FALSE
+JAX-P008,Branson,Combs,player,LB,FALSE
+JAX-P009,Logan,Cooke,player,P,FALSE
+JAX-P010,Matt,Dickerson,player,DT,FALSE
+JAX-P011,Quinn,Ewers,player,QB,FALSE
+JAX-P012,Daniel,Faalele,player,OL,FALSE
+JAX-P013,Dennis,Gardeck,player,LB,FALSE
+JAX-P014,Robert,Hainsey,player,OL,FALSE
+JAX-P015,DaVon,Hamilton,player,DT,FALSE
+JAX-P016,Anton,Harrison,player,OL,FALSE
+JAX-P017,Josh,Hines-Allen,player,DE,FALSE
+JAX-P018,Travis,Hunter,player,WR/CB,FALSE
+JAX-P019,Jalen,Huskey,player,S,FALSE
+JAX-P020,Alijah,Huzzie,player,CB,FALSE
+JAX-P021,Antonio,Johnson,player,S,FALSE
+JAX-P022,Jarrian,Jones,player,CB,FALSE
+JAX-P023,Jaylon,Jones,player,CB,FALSE
+JAX-P024,Jack,Kiser,player,LB,FALSE
+JAX-P025,Tanner,Koziol,player,TE,FALSE
+JAX-P026,Rayuan,Lane III,player,S,FALSE
+JAX-P027,Trevor,Lawrence,player,QB,FALSE
+JAX-P028,Jourdan,Lewis,player,CB,FALSE
+JAX-P029,Cam,Little,player,K,FALSE
+JAX-P030,Walker,Little,player,OL,FALSE
+JAX-P031,Ross,Matiscik,player,LS,FALSE
+JAX-P032,Jakobi,Meyers,player,WR,FALSE
+JAX-P033,Ventrell,Miller,player,LB,FALSE
+JAX-P034,Wyatt,Milum,player,OL,FALSE
+JAX-P035,Jonah,Monheim,player,OL,FALSE
+JAX-P036,Quintin,Morris,player,TE,FALSE
+JAX-P037,Eric,Murray,player,S,FALSE
+JAX-P038,Foyesade,Oluokun,player,LB,FALSE
+JAX-P039,Ruke,Orhorhoro,player,DT,FALSE
+JAX-P040,Emmanuel,Pregnon,player,OL,FALSE
+JAX-P041,Albert,Regis,player,DT,FALSE
+JAX-P042,Chris,Rodriguez Jr.,player,RB,FALSE
+JAX-P043,Brenton,Strange,player,TE,FALSE
+JAX-P044,Danny,Striggow,player,DE,FALSE
+JAX-P045,Jahlani,Tavai,player,LB,FALSE
+JAX-P046,Brian,Thomas Jr.,player,WR,FALSE
+JAX-P047,Bryan,Thomas Jr.,player,DE,FALSE
+JAX-P048,Bhayshul,Tuten,player,RB,FALSE
+JAX-P049,Cole,Van Lanen,player,OL,FALSE
+JAX-P050,Travon,Walker,player,DE,FALSE
+JAX-P051,Parker,Washington,player,WR,FALSE
+JAX-P052,CJ,Williams,player,WR,FALSE
+JAX-P053,Wesley,Williams,player,DE,FALSE
+JAX-P054,Jared,Bartlett,player,LB,FALSE
+JAX-P055,Christian,Braswell,player,CB,FALSE
+JAX-P056,Garrett,DiGiorgio,player,OL,FALSE
+JAX-P057,B.J.,Green II,player,DE,FALSE
+JAX-P058,Parker,Hughes,player,LB,FALSE
+JAX-P059,Sam,Mustipher,player,OL,FALSE
+JAX-P060,Caleb,Ransaw,player,S,FALSE
+JAX-P061,Zach,Durfee,player,DE,FALSE
+JAX-P062,Patrick,Mekari,player,OL,FALSE
+JAX-P063,Joey,Aguilar,player,QB,FALSE
+JAX-P064,Brenden,Bates,player,TE,FALSE
+JAX-P065,T.J.,Bollers,player,DT,FALSE
+JAX-P066,Geron,Christian Sr.,player,OT,FALSE
+JAX-P067,Eli,Cox,player,OL,FALSE
+JAX-P068,Tim,Jones,player,WR,FALSE
+JAX-P069,Jalen,McLeod,player,LB,FALSE
+JAX-P070,Kaevon,Merriweather,player,S,FALSE
+JAX-P071,Jabbar,Muhammad,player,CB,FALSE
+JAX-P072,Nick,Mullens,player,QB,FALSE
+JAX-P073,BJ,Ojulari,player,DE,FALSE
+JAX-P074,Trebor,Peña,player,WR,FALSE
+JAX-P075,Cam'Ron,Silmon-Craig,player,S,FALSE
+JAX-P076,J'Mari,Taylor,player,RB,FALSE
+JAX-P077,Austin,Trammell,player,WR,FALSE
+JAX-P078,Michael,Wortham,player,WR,FALSE
+JAX-P079,Kilian,Zierer,player,OL,FALSE
+JAX-C001,Liam,Coen,coach,Head Coach,FALSE
+JAX-C002,Jay,Kaiser,coach,Assistant to the Head Coach,FALSE
+JAX-C003,Jon,Dykema,coach,Senior Director of Football Strategy and Game Management,FALSE
+JAX-C004,Josh,Lima,coach,Quality Control Coach,FALSE
+JAX-C005,Grant,Udinski,coach,Offensive Coordinator,FALSE
+JAX-C006,Shane,Waldron,coach,Assistant Head Coach/Pass Game Coordinator,FALSE
+JAX-C007,Brian,Picucci,coach,Run Game Coordinator,FALSE
+JAX-C008,Spencer,Whipple,coach,Quarterbacks Coach,FALSE
+JAX-C009,Shaun,Sarrett,coach,Offensive Line Coach,FALSE
+JAX-C010,Edgar,Bennett,coach,Wide Receivers Coach,FALSE
+JAX-C011,Richard,Angulo,coach,Tight Ends Coach,FALSE
+JAX-C012,Chad,Morton,coach,Running Backs Coach,FALSE
+JAX-C013,John,Van Dam,coach,Offensive Pass Game Specialist,FALSE
+JAX-C014,Tyler,Tettleton,coach,Assistant Wide Receivers Coach,FALSE
+JAX-C015,Trevor,Mendelson,coach,Assistant Offensive Line Coach,FALSE
+JAX-C016,Fred,Walker,coach,Offensive Assistant,FALSE
+JAX-C017,Anthony,Campanile,coach,Defensive Coordinator,FALSE
+JAX-C018,Matt,Edwards,coach,Defensive Line Coach,FALSE
+JAX-C019,Tem,Lukabu,coach,Linebackers Coach,FALSE
+JAX-C020,Mathieu,Araujo,coach,Defensive Pass Game Coordinator,FALSE
+JAX-C021,Anthony,Perkins,coach,Defensive Backs Coach,FALSE
+JAX-C022,Bill,Sheridan,coach,Senior Defensive Assistant,FALSE
+JAX-C023,Grant,Morgan,coach,Defensive Assistant/Assistant Defensive Line Coach,FALSE
+JAX-C024,Derrick,LeBlanc,coach,Pass Rush Specialist,FALSE
+JAX-C025,Kevin,Wilkins,coach,Assistant Linebackers Coach,FALSE
+JAX-C026,Drew,Lascari,coach,Assistant Defensive Backs Coach,FALSE
+JAX-C027,Heath,Farwell,coach,Associate Head Coach/Special Teams Coordinator,FALSE
+JAX-C028,Luke,Thompson,coach,Assistant Special Teams Coach,FALSE
