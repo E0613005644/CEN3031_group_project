@@ -19,6 +19,12 @@ class Calendar {
     removeEvent(id) {
         this.events = this.events.filter(event => event.id !== id);
     }
+
+    editEvent(id) {
+        // Code to edit event, should only be able to edit certain things but not set in stone variables such as id, etc
+    }    
+
+    
 }
 
 module.exports = Calendar;
