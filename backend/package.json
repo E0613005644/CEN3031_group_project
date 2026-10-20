@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/E0613005644/CEN3031_group_project#readme",
   "dependencies": {
-    "express": "^5.3.0"
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
   }
 }
