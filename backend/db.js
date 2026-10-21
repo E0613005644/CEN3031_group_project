@@ -13,7 +13,3 @@ const db=new Pool({
     password:process.env.DB_PASSWORD,
 });
 module.exports=db;
-
-
-
-
