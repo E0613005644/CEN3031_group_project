@@ -123,7 +123,7 @@ body {
     transform 0.3s ease;
 }
 
-.registration-form button:hover {
+.registration-form button:hover:not(:disabled) {
   background:
     linear-gradient(rgba(255, 255, 255, 0.82), rgba(0, 165, 181, 0.12)) padding-box,
     linear-gradient(
@@ -145,6 +145,11 @@ body {
   background-size: 100% 100%, 250% 100%;
   box-shadow: 0 0 12px rgba(215, 162, 42, 0.45);
   animation: border-shimmer 3s linear infinite;
+}
+
+.registration-form button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 @keyframes border-shimmer {
@@ -173,4 +178,351 @@ body {
   font-size: 0.9rem;
   line-height: 1.4;
   text-align: center;
+}
+
+.error-message {
+  margin: 0;
+  padding: 12px 14px;
+  color: #8a1c1c;
+  background-color: #fff0f0;
+  border-left: 4px solid #c62828;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.logout-button {
+  padding: 10px 16px;
+  color: #ffffff;
+  background-color: #006778;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #004e5b;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  padding: 32px 20px;
+  background: linear-gradient(135deg, #00a5b5 0%, #006778 50%, #101820 100%);
+}
+
+.dashboard-topbar {
+  width: min(1440px, 100%);
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 64px);
+  color: #101820;
+  background: #ffffff;
+  border-top: 8px solid #d7a22a;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #006778;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: #006778;
+  border-radius: 30px;
+  font-size: 1.25rem;
+  font-style: italic;
+  padding: 4px; 
+}
+
+.dashboard-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.account-avatar {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: #006778;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.account-details {
+  display: grid;
+  gap: 3px;
+  color: #101820;
+  font-size: 0.88rem;
+}
+
+.account-details span {
+  color: #69737c;
+  font-size: 0.78rem;
+}
+
+.dashboard-account .logout-button {
+  margin-left: 8px;
+  color: #ffffff;
+  background: #006778;
+  border: 2px solid transparent;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-account .logout-button:hover {
+  background: #004e5b;
+  box-shadow: 0 0 12px rgba(215, 162, 42, 0.35);
+  transform: translateY(-2px);
+}
+
+.dashboard-content {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 42px clamp(24px, 5vw, 64px) 64px;
+  background: #ffffff;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-welcome {
+  margin-bottom: 34px;
+}
+
+.dashboard-eyebrow {
+  margin: 0 0 10px;
+  color: #00a5b5;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.dashboard-welcome h1 {
+  margin: 0 0 10px;
+  color: #d7a22a;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  letter-spacing: -1px;
+  line-height: 1.15;
+  background: linear-gradient(
+    90deg,
+    #8f681c 0%,
+    #d7a22a 25%,
+    #d6c989 50%,
+    #d7a22a 75%,
+    #8f681c 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(215, 162, 42, 0.35);
+}
+
+.dashboard-welcome > p:last-child {
+  color: #59636d;
+  font-size: 1.05rem;
+}
+
+.calendar-panel {
+  padding: clamp(22px, 3vw, 36px);
+  background: #ffffff;
+  border: 1px solid #dce5e8;
+  border-top: 6px solid #00a5b5;
+  border-radius: 12px;
+  box-shadow: 0 12px 34px rgba(16, 24, 32, 0.08);
+}
+
+.calendar-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.calendar-panel-header .dashboard-eyebrow {
+  margin-bottom: 6px;
+}
+
+.calendar-panel-header h2 {
+  margin: 0 0 6px;
+  color: #101820;
+  font-size: 1.6rem;
+}
+
+.calendar-panel-header p:last-child {
+  color: #69737c;
+  font-size: 0.95rem;
+}
+
+.calendar-status {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  color: #005766;
+  background: rgba(0, 165, 181, 0.1);
+  border: 1px solid rgba(0, 165, 181, 0.25);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.calendar-placeholder {
+  overflow: hidden;
+  border: 1px solid #e4e9ed;
+  border-radius: 12px;
+}
+
+.calendar-placeholder-toolbar {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #e4e9ed;
+}
+
+.placeholder-control,
+.placeholder-month {
+  height: 12px;
+  display: block;
+  background: #e8edf0;
+  border-radius: 6px;
+}
+
+.placeholder-control {
+  width: 54px;
+}
+
+.placeholder-month {
+  width: min(180px, 35%);
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays {
+  min-height: 42px;
+  align-items: center;
+  color: #69737c;
+  background: #f8fafb;
+  border-bottom: 1px solid #e4e9ed;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-align: center;
+}
+
+.calendar-day {
+  min-height: clamp(64px, 9vw, 112px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-right: 1px solid #e9edef;
+  border-bottom: 1px solid #e9edef;
+}
+
+.calendar-day:nth-child(7n) {
+  border-right: 0;
+}
+
+.calendar-day span {
+  width: 18px;
+  height: 8px;
+  background: #edf1f3;
+  border-radius: 5px;
+}
+
+.calendar-day i {
+  width: min(70px, 90%);
+  height: 7px;
+  background: rgba(0, 165, 181, 0.22);
+  border-radius: 5px;
+}
+
+.calendar-day i + i {
+  background: rgba(215, 162, 42, 0.32);
+}
+
+.calendar-note {
+  margin: 18px 0 0;
+  color: #69737c;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .registration-card {
+    padding: 28px 22px;
+  }
+
+  .name-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-topbar {
+    min-height: 72px;
+    padding: 0 18px;
+    border-top-width: 6px;
+  }
+
+  .dashboard-brand {
+    gap: 8px;
+    font-size: 1.08rem;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .account-details {
+    display: none;
+  }
+
+  .dashboard-account {
+    gap: 8px;
+  }
+
+  .dashboard-account .logout-button {
+    margin-left: 0;
+    padding: 9px 11px;
+    font-size: 0.82rem;
+  }
+
+  .dashboard-content {
+    padding-top: 36px;
+  }
+
+  .calendar-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-day {
+    padding: 8px 5px;
+  }
 }
