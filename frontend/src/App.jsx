@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import TeamCalendar from './TeamCalendar';
 
 function App() {
   /*This is to store the information a user enters */
@@ -100,40 +101,16 @@ function App() {
             <p>Your team home base for schedules and updates.</p>
           </section>
 
-          <section className="calendar-panel" aria-labelledby="calendar-heading">
-            <div className="calendar-panel-header">
+          <section className = "calendar-panel" aria-labelledby = "calendar-heading"> 
+            <div className = "calendar-panel-header">
               <div>
-                <p className="dashboard-eyebrow">YOUR TEAM</p>
-                <h2 id="calendar-heading">Team calendar</h2>
-                <p>Team events and schedule will be available here.</p>
+                <p className = "dashboard-eyebrow">YOUR TEAM</p>
+                <h2 id = "calendar-heading">Team calendar</h2>
+                <p>View the current and upcoming team schedule.</p>
               </div>
-              <span className="calendar-status">Coming soon</span>
+              <span className = "calendar-status">Three-month view</span>
             </div>
-
-            <div className="calendar-placeholder" aria-hidden="true">
-              <div className="calendar-placeholder-toolbar">
-                <span className="placeholder-control" />
-                <span className="placeholder-month" />
-                <span className="placeholder-control" />
-              </div>
-              <div className="calendar-weekdays">
-                {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
-                  <span key={day}>{day}</span>
-                ))}
-              </div>
-              <div className="calendar-grid">
-                {Array.from({ length: 35 }, (_, index) => (
-                  <div className="calendar-day" key={index}>
-                    <span />
-                    {index % 8 === 2 && <i />}
-                    {index % 11 === 5 && <i />}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="calendar-note">
-              This space is ready for your team’s practices, games, and events.
-            </p>
+            <TeamCalendar />
           </section>
         </div>
       </main>
