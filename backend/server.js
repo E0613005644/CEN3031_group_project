@@ -196,6 +196,10 @@ app.post("/api/roster/verify", async(req,res)=>{
         }
 
         const result=await login.checkLogin(teamId, firstName, lastName, role);
+        if(result.valid && !result.registered) {
+            await login.updateRegistration(result.user.teamId);
+            result.registered = true;
+        }
         res.json(result);
     }
     catch(error){
