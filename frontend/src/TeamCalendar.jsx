@@ -22,7 +22,8 @@ function getDateKey(date) {
 
 //receives a correctly formatted date and then searches through sample events and returns only events whose starting date matches
 function getEventsForDate(events, dateKey) {
-    return events.filter((event) => event.start.slice(0, 10) === dateKey);
+    return events.filter((event) => getDateKey(new Date(event.start)) === dateKey);
+    //fixes glitch because it converts the timestamp into the browser's local time and then produces the correct local calendar date
 }
 
 function getEventCategoryClass(eventType) {
@@ -204,6 +205,8 @@ function TeamCalendar({ user }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...editingEvent,
+                    start: new Date(editingEvent.start).toISOString(), /* converts the local datetime to UTC for PostgreSQL */
+                    end: new Date(editingEvent.end).toISOString(),
                     teamId: user.teamId,
                     firstName: user.firstName,
                     lastName: user.lastName,
@@ -271,6 +274,8 @@ function TeamCalendar({ user }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...newEvent,
+                    start: new Date(newEvent.start).toISOString(), /* converts the local datetime to UTC for PostgreSQL */
+                    end: new Date(newEvent.end).toISOString(),
                     teamId: user.teamId,
                     firstName: user.firstName,
                     lastName: user.lastName,
@@ -334,7 +339,8 @@ function TeamCalendar({ user }) {
                 singleMonthMinWidth = {280}
                 height = {calendarView === 'dayGridWeek' ? 620 : 'auto'}
                 dateClick = {handleDateClick}
-                events = {events}
+                /*events = {events} */
+                events = {calendarView === 'threeMonthSeason' ? [] : events} /*If three-month view, then no bullets inside the small boxes. If not, then FullCalendar receives the real events and displays the bullet points*/
                 eventClassNames = {(info) => [getEventCategoryClass(info.event.extendedProps.eventType)]}
                 dayCellClass = {(info) => {
                     const dateKey = getDateKey(info.date);
