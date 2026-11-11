@@ -38,6 +38,10 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error('The identity API is unavailable. Make sure the backend is running on port 5000.');
+      }
       const result = await response.json();
 
       if (!response.ok) {
@@ -105,12 +109,12 @@ function App() {
             <div className = "calendar-panel-header">
               <div>
                 <p className = "dashboard-eyebrow">YOUR TEAM</p>
-                <h2 id = "calendar-heading">Team calendar</h2>
-                <p>View the current and upcoming team schedule.</p>
+                {/* <h1 id = "calendar-heading">Team calendar</h1>
+                <p>View the current and upcoming team schedule.</p> */}
               </div>
-              <span className = "calendar-status">Three-month view</span>
+              <span className = "calendar-status">{roleLabel}{user.position ? ` · ${user.position}` : ''}</span>
             </div>
-            <TeamCalendar />
+            <TeamCalendar user={user} />
           </section>
         </div>
       </main>
