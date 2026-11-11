@@ -2,6 +2,20 @@ import { useState } from 'react';
 import './App.css';
 import TeamCalendar from './TeamCalendar';
 
+/*checks whether the tab has a saved user*/
+function getSavedUser() {
+  const savedUser = sessionStorage.getItem('jagsSyncUser');
+  if (!savedUser) {
+    return null;
+  }
+  try {
+    return JSON.parse(savedUser);
+  } catch {
+    sessionStorage.removeItem('jagsSyncUser');
+    return null;
+  }
+}
+
 function App() {
   /*This is to store the information a user enters */
   const [formData, setFormData] = useState({
@@ -12,7 +26,7 @@ function App() {
   });
 
   /*This is to store the submission message after the form is submitted */
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getSavedUser); /*React will now not logout user after page refresh */
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,6 +67,7 @@ function App() {
         return;
       }
 
+      sessionStorage.setItem('jagsSyncUser', JSON.stringify(result.user));
       setUser(result.user);
     } catch (error) {
       setErrorMessage(
@@ -66,6 +81,7 @@ function App() {
   }
 
   function handleLogout() {
+    sessionStorage.removeItem('jagsSyncUser');
     setUser(null);
     setFormData({ teamId: '', firstName: '', lastName: '', role: '' });
     setErrorMessage('');
