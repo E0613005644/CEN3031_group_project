@@ -4,8 +4,8 @@
 
 Requirements: Node.js and PostgreSQL.
 
-1. Create a PostgreSQL database and run `database/create_roster_table.sql`, then
-   `database/seed_roster.sql` against it.
+1. Create a PostgreSQL database and run `database/create_roster_table.sql`,
+   `database/create_events_table.sql`, then `database/seed_roster.sql` against it.
 2. Create `backend/.env` with the database connection settings:
 
    ```env
@@ -39,3 +39,7 @@ Requirements: Node.js and PostgreSQL.
 The current login verifies roster information (team ID, name, and role); it
 does not use a password or create a server-side session. Treat it as a project
 prototype, not production-grade authentication.
+
+Verified coaches can create team events from the calendar. Events are stored in
+the shared `events` table and are available to all signed-in users through the
+calendar.

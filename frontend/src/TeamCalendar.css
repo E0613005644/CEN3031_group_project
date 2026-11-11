@@ -1,0 +1,739 @@
+.team-calendar {
+    /* --fc- are the settings provided by FullCalendar */
+    --fc-border-color: #dce5e8;
+    --fc-today-bg-color: rgba(215, 162, 42, 0.15);
+    position: relative;
+    color: #12343b;
+}
+
+.create-event-button,
+.submit-event-button {
+    position: relative;
+    overflow: hidden;
+    padding: 12px 18px;
+    color: #ffffff;
+    background: linear-gradient(110deg, #006778, #008b98);
+    border: 1px solid #005463;
+    border-radius: 8px;
+    box-shadow: 0 6px 14px rgba(0, 103, 120, 0.2);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calendar-view-toggle {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid #006778;
+    box-shadow: 0 5px 14px rgba(0, 103, 120, 0.12);
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+
+.calendar-view-toggle button {
+    padding: 10px 16px;
+    color: #006778;
+    background: #ffffff;
+    border: 0;
+    border-right: 1px solid #006778;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.calendar-view-toggle button:last-child {
+    border-right: 0;
+}
+
+.calendar-view-toggle button.active,
+.calendar-view-toggle button:hover {
+    color: #ffffff;
+    background: #006778;
+}
+
+.create-event-button {
+    display: block;
+    margin: 0 0 18px 0;
+}
+
+.create-event-button:hover,
+.submit-event-button:hover,
+.calendar-view-toggle button:hover,
+.event-icon-button:hover,
+.event-secondary-button:hover,
+.delete-event-button:hover,
+.event-popup-close:hover {
+    color: #12343b;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(0, 165, 181, 0.14)) padding-box,
+        linear-gradient(110deg, #9f792c, #d7a22a, #fff2ad, #d7a22a, #9f792c) border-box;
+    background-size: 100% 100%, 250% 100%;
+    border-color: transparent;
+    box-shadow: 0 0 13px rgba(215, 162, 42, 0.45);
+    transform: translateY(-2px);
+    animation: calendar-button-shimmer 2.5s linear infinite;
+}
+
+.create-event-button:hover,
+.submit-event-button:hover {
+    box-shadow: 0 9px 20px rgba(0, 103, 120, 0.3);
+}
+
+.create-event-button:focus-visible,
+.submit-event-button:focus-visible,
+.calendar-view-toggle button:focus-visible,
+.event-icon-button:focus-visible,
+.event-popup-close:focus-visible {
+    outline: 3px solid rgba(215, 162, 42, 0.5);
+    outline-offset: 2px;
+}
+
+.calendar-controls {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.calendar-error {
+    color: #a32626;
+    font-weight: 700;
+}
+
+.create-event-form {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+}
+
+.create-event-form label {
+    display: grid;
+    gap: 6px;
+    color: #12343b;
+    font-weight: 700;
+}
+
+.create-event-form input,
+.create-event-form select,
+.create-event-form textarea {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #b8c5c9;
+    border-radius: 6px;
+    font: inherit;
+    color: #12343b;
+    background: #fcfefe;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.create-event-form input:focus,
+.create-event-form select:focus,
+.create-event-form textarea:focus,
+.event-edit-form input:focus,
+.event-edit-form select:focus,
+.event-edit-form textarea:focus {
+    border-color: #00a5b5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 165, 181, 0.14);
+}
+
+.create-event-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.submit-event-button {
+    justify-self: end;
+}
+
+.event-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.event-item-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.event-icon-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.event-icon-button {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: #006778;
+    background: #ffffff;
+    border: 1px solid #006778;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.event-icon-button:hover {
+    color: #ffffff;
+    background: #006778;
+}
+
+.event-icon-button.delete {
+    color: #a32626;
+    border-color: #a32626;
+}
+
+.event-icon-button.delete:hover {
+    color: #ffffff;
+    background: #a32626;
+}
+
+.event-week-preview {
+    display: grid;
+    gap: 7px;
+    max-height: 210px;
+    overflow-y: auto;
+    padding: 12px;
+    background: linear-gradient(135deg, #f8fafb, #eef7f7);
+    border: 1px solid #dce5e8;
+    border-radius: 8px;
+}
+
+.event-week-preview-heading {
+    margin: 0 0 2px;
+    color: #006778;
+    font-weight: 800;
+}
+
+.event-week-day {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 8px;
+    align-items: start;
+    font-size: 0.85rem;
+}
+
+.event-week-day > div {
+    display: grid;
+    gap: 3px;
+}
+
+.event-week-item,
+.event-week-empty {
+    color: #59636d;
+}
+
+.event-week-item {
+    display: block;
+    padding: 4px 8px;
+    border-left: 3px solid currentColor;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.event-week-item.preview {
+    font-weight: 800;
+    box-shadow: 0 0 0 1px rgba(0, 103, 120, 0.2);
+}
+
+.event-secondary-button,
+.delete-event-button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.event-secondary-button {
+    color: #006778;
+    background: #ffffff;
+    border: 1px solid #006778;
+}
+
+.delete-event-button {
+    color: #ffffff;
+    background: #a32626;
+    border: 0;
+}
+
+.delete-event-button:hover {
+    background: #7d1d1d;
+}
+
+.event-edit-form {
+    display: grid;
+    gap: 12px;
+}
+
+.event-edit-form label {
+    display: grid;
+    gap: 5px;
+    color: #12343b;
+    font-weight: 700;
+}
+
+.event-edit-form input,
+.event-edit-form select,
+.event-edit-form textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 9px;
+    border: 1px solid #b8c5c9;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.team-calendar .fc {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.team-calendar .fc-toolbar {
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.team-calendar .fc-toolbar-title {
+    color: #12343b;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.team-calendar .calendar-navigation-group {
+    display: flex !important;
+    gap: 10px;
+    overflow: visible;
+}
+
+/* style for the buttons in the calendar toolbar */
+.team-calendar .calendar-navigation-button {
+    box-sizing: border-box;
+    width:42px;
+    height: 42px;
+    padding: 0;
+    color: #ffffff !important; /* !important overrides the ordinary CSS rules from the FullCalendar's built-in styles*/
+    background-color: #006778 !important;
+    border: 3px solid transparent !important;
+    border-radius: 9px !important;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.team-calendar .calendar-navigation-button::before,
+.team-calendar .calendar-navigation-button::after {
+    display: none !important;
+}
+
+.team-calendar .calendar-navigation-button:hover {
+    color: #12343b !important;
+    background:
+        linear-gradient(
+            rgba(255, 255, 255, 0.88),
+            rgba(0, 165, 181, 0.14)
+        ) padding-box,
+        linear-gradient(
+            110deg,
+            #9f792c,
+            #d7a22a,
+            #fff2ad,
+            #d7a22a,
+            #9f792c
+        ) border-box !important;
+
+    background-size: 100% 100%, 250% 100% !important;
+    box-shadow: 0 0 13px rgba(215, 162, 42, 0.45);
+    transform: translateY(-2px);
+    animation: calendar-button-shimmer 2.5s linear infinite;
+}
+
+.team-calendar .calendar-navigation-button:focus-visible {
+    outline: 3px solid rgba(0, 165, 181, 0.32);
+    outline-offset: 2px;
+}
+
+@keyframes calendar-button-shimmer {
+    from {
+        background-position: 0 0, 200% 0;
+    }
+    to {
+        background-position: 0 0, -200% 0;
+    }
+}
+
+/* now to the 3 month calendar container */
+
+.team-calendar .fc-multimonth {
+    overflow: hidden;
+    padding: 18px;
+    background-color: #ffffff;
+    border: 1px solid #dce5e8;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(16, 24, 32, 0.09);
+}
+
+.team-calendar .fc-multimonth-month {
+    padding: 12px;
+}
+
+.team-calendar .fc-multimonth-title {
+    padding: 12px;
+    color: #006778;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.team-calendar .fc-col-header-cell {
+    color: #59636d;
+    background-color: #f8fafb;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.team-calendar .fc-daygrid-day-number {
+    color: #12343b;
+    text-decoration: none;
+}
+
+/* style for the dates that contains events */
+
+.team-calendar .has-team-event {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 165, 181, 0.24),
+            rgba(215, 162, 42, 0.2)
+        ) !important;
+    box-shadow: 
+        inset 0 0 0 2px rgba(0, 103, 120, 0.34);
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.team-calendar .has-team-event:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 165, 181, 0.38),
+            rgba(215, 162, 42, 0.3)
+        ) !important;
+    box-shadow:
+        inset 0 0 0 2px #d7a22a,
+        0 0 10px rgba(215, 162, 42, 0.3);
+}
+
+.team-calendar .has-team-event .fc-daygrid-day-number {
+    color: #006778;
+    font-weight: 800;
+}
+
+/* for a dark background behind the pop up */
+
+.event-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    overflow-y: auto;
+    background-color: rgba(16, 24, 32, 0.68);
+    backdrop-filter: blur(4px);
+}
+
+/* for the pop up itself */
+.event-popup {
+    position: relative;
+    width: min(520px, 100%);
+    min-width: 0;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 38px;
+    color: #12343b;
+    background-color: #ffffff;
+    border-top: 8px solid #d7a22a;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42);
+
+    animation: popup-appearance 0.25s ease-out;
+}
+
+@media (max-width: 600px) {
+    .event-popup-overlay {
+        padding: 12px;
+    }
+
+    .event-popup {
+        padding: 28px 20px;
+    }
+
+    .create-event-dates {
+        grid-template-columns: 1fr;
+    }
+
+    .event-week-day {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .calendar-view-toggle {
+        flex: 1;
+    }
+
+    .calendar-view-toggle button {
+        flex: 1;
+        padding: 8px 6px;
+    }
+
+    .calendar-controls {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .create-event-button {
+        align-self: flex-start;
+    }
+}
+
+@keyframes popup-appearance {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* style of popup heading */
+
+.event-popup-label {
+    margin: 0 0 10px;
+    color: #00a5b5;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.event-popup h2 {
+    margin: 0 42px 24px 0;
+    padding-bottom: 3px;
+    color: #d7a22a;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    background: linear-gradient(
+        90deg,
+        #8f681c 0%,
+        #d7a22a 25%,
+        #e2bd5c 50%,
+        #d7a22a 75%,
+        #8f681c 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(215, 162, 42, 0.25);
+}
+
+/* style for the popup close button */
+
+.event-popup-close {
+    position: absolute;
+    top:20px;
+    right:20px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: #ffffff;
+    background-color: #006778;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.event-popup-close:hover {
+    color: #12343b;
+    background-color: #ffffff;
+    border-color: #d7a22a;
+    box-shadow: 0 0 12px rgba(215, 162, 42, 0.3);
+}
+
+/* event information in the popup */
+
+.event-popup-list {
+    display: grid;
+    gap: 16px;
+}
+
+.event-popup-item {
+    padding: 20px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 165, 181, 0.12),
+            rgba(215, 162, 42, 0.12)
+        );
+    border: 1px solid rgba(0, 103, 120, 0.2);
+    border-left: 5px solid #006778;
+    border-radius: 12px;
+}
+
+.event-type {
+    display: inline-block;
+    margin-bottom: 9px;
+    padding: 5px 10px;
+    color: #12343b;
+    background-color: #eef2f3;
+    border: 1px solid #c7d3d6;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.event-category-practice {
+    --event-color: #006778;
+    color: #006778;
+    background-color: rgba(0, 165, 181, 0.14);
+    border-color: rgba(0, 103, 120, 0.35);
+}
+
+.event-category-game {
+    --event-color: #9f6817;
+    color: #8a5810;
+    background-color: rgba(215, 162, 42, 0.22);
+    border-color: rgba(159, 121, 44, 0.45);
+}
+
+.event-category-meeting {
+    --event-color: #68479a;
+    color: #68479a;
+    background-color: rgba(126, 87, 166, 0.15);
+    border-color: rgba(104, 71, 154, 0.35);
+}
+
+.event-category-travel {
+    --event-color: #2f7d4a;
+    color: #286d3f;
+    background-color: rgba(69, 150, 91, 0.15);
+    border-color: rgba(47, 125, 74, 0.35);
+}
+
+.event-category-other {
+    --event-color: #59636d;
+    color: #59636d;
+    background-color: rgba(89, 99, 109, 0.14);
+    border-color: rgba(89, 99, 109, 0.35);
+}
+
+.team-calendar .fc-event {
+    border-color: var(--event-color, #006778);
+    background: var(--event-color, #006778);
+}
+
+.team-calendar .fc-event-main,
+.team-calendar .fc-event-title {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.team-calendar .fc-event .fc-daygrid-event-dot {
+    border-color: currentColor;
+}
+
+.team-calendar .event-category-practice .fc-event-main,
+.team-calendar .event-category-practice .fc-event-title,
+.team-calendar .event-category-practice .fc-daygrid-event-dot {
+    color: #006778;
+}
+
+.team-calendar .event-category-game .fc-event-main,
+.team-calendar .event-category-game .fc-event-title,
+.team-calendar .event-category-game .fc-daygrid-event-dot {
+    color: #8a5810;
+}
+
+.team-calendar .event-category-meeting .fc-event-main,
+.team-calendar .event-category-meeting .fc-event-title,
+.team-calendar .event-category-meeting .fc-daygrid-event-dot {
+    color: #68479a;
+}
+
+.team-calendar .event-category-travel .fc-event-main,
+.team-calendar .event-category-travel .fc-event-title,
+.team-calendar .event-category-travel .fc-daygrid-event-dot {
+    color: #286d3f;
+}
+
+.team-calendar .event-category-other .fc-event-main,
+.team-calendar .event-category-other .fc-event-title,
+.team-calendar .event-category-other .fc-daygrid-event-dot {
+    color: #59636d;
+}
+
+.event-popup-item h3 {
+    margin: 0 0 10px;
+    color: #12343b;
+    font-size: 1.2rem;
+}
+
+.event-popup-item p {
+    margin: 7px 0 0;
+    color: #59636d;
+    line-height: 1.5;
+}
+
+.event-popup-item .event-time {
+    color: #006778;
+    font-weight: 700;
+}
+
+/* Keep secondary controls consistent with the calendar navigation hover treatment. */
+.team-calendar .create-event-button:hover,
+.team-calendar .submit-event-button:hover,
+.team-calendar .calendar-view-toggle button:hover,
+.team-calendar .event-icon-button:hover,
+.team-calendar .event-secondary-button:hover,
+.team-calendar .delete-event-button:hover,
+.team-calendar .event-popup-close:hover {
+    color: #12343b !important;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(0, 165, 181, 0.14)) padding-box,
+        linear-gradient(110deg, #9f792c, #d7a22a, #fff2ad, #d7a22a, #9f792c) border-box !important;
+    background-size: 100% 100%, 250% 100% !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 13px rgba(215, 162, 42, 0.45) !important;
+    transform: translateY(-2px);
+    animation: calendar-button-shimmer 2.5s linear infinite;
+}
