@@ -31,6 +31,23 @@ async function verifyCoach(body) {
     return coach.valid && coach.isCoach;
 }
 
+
+
+async function verifyPlayer(body) {
+    const { teamId, firstName, lastName, role } = body || {};
+    if (
+        typeof teamId !== "string" ||
+        typeof firstName !== "string" ||
+        typeof lastName !== "string" ||
+        role !== "player"
+    ) {
+        return false;
+    }
+
+    const player = await login.checkLogin(teamId, firstName, lastName, role);
+    return player.valid && player.isPlayer;
+}
+
 app.get("/api/events", async(req,res)=>{
     try {
         const result = await db.query(
@@ -182,6 +199,121 @@ app.delete("/api/events/:id", async(req,res)=>{
         res.status(500).json({error: "The event could not be deleted. Please try again."});
     }
 });
+
+
+app.put("/api/events/:id/availability", async(req,res)=>{
+    try{
+        const eId=Number(req.params.id);
+        if(!Number.isSafeInteger(eId)||eId<=0){
+            return res.status(400).json({error:"This is an invalid event ID."});
+        }
+        const { teamId, firstName, lastName, role, status} = req.body || {};
+        if(!["available","unavailable"].includes(status)){
+            return res.status(400).json({error: "Status must be either available or unavailable."});
+        }
+        if(typeof teamId!=="string"|| !teamId.trim() ||typeof firstName!=="string"|| !firstName.trim() ||typeof lastName!=="string"||!lastName.trim()||role!=="player"){
+            return res.status(400).json({error: "Player information must be correct."});
+        }
+        if(!(await verifyPlayer(req.body))){
+            return res.status(403).json({error: "Only verified players can update their status"});
+        }
+        const playerId=teamId.trim().toUpperCase();
+        const event=await db.query("SELECT id FROM events WHERE id=$1",[eId]);
+        if(event.rowCount==0)
+            return res.status(404).json({error:"Event was not found"});
+        const result=await db.query(
+            `INSERT INTO event_availability(event_id,player_id,status)
+            VALUES($1,$2,$3) 
+            ON CONFLICT(event_id,player_id) 
+            DO UPDATE SET status=EXCLUDED.status 
+            RETURNING event_id, player_id, status` , 
+            [eId,playerId,status]
+        );
+        res.json({eventId:result.rows[0].event_id, playerId:result.rows[0].player_id, status:result.rows[0].status});
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({error:"This event availability couldn't be saved. Try again."});
+    }
+});
+
+
+app.post("/api/events/:id/availability/responses", async(req,res)=>{
+    try{
+        const eId=Number(req.params.id);
+        if(!Number.isSafeInteger(eId)||eId<=0){
+            return res.status(400).json({error:"This is an invalid event ID."});
+        }
+        if(!(await verifyCoach(req.body))){
+            return res.status(403).json({error: "Only verified coaches can view player responses."});
+        }
+        const event=await db.query("SELECT id FROM events WHERE id=$1",[eId]);
+        if(event.rowCount==0)
+            return res.status(404).json({error:"Event was not found"});
+        const result=await db.query(
+            `SELECT ea.event_id, ea.player_id, rm.first_name, rm.last_name, rm.position, ea.status
+            FROM event_availability ea
+            JOIN roster_members rm ON ea.player_id = rm.team_id
+            WHERE ea.event_id=$1
+            ORDER BY rm.last_name, rm.first_name`,
+            [eId]
+        );
+        const responses=result.rows.map(row=>({
+            eventId:row.event_id,
+            playerId:row.player_id,
+            firstName:row.first_name,
+            lastName:row.last_name,
+            position:row.position,
+            status:row.status
+        }));
+        res.json(responses);
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({error:"Player responses couldn't be retrieved. Try again."});
+    }
+});
+
+app.post("/api/events/:id/availability/saved", async(req,res)=>{
+    try{
+        const eId=Number(req.params.id);
+        if(!Number.isSafeInteger(eId)||eId<=0){
+            return res.status(400).json({error:"This is an invalid event ID."});
+        }
+        const {teamId, firstName, lastName, role}=req.body||{};
+        if(typeof teamId!=="string"|| !teamId.trim() ||typeof firstName!=="string"|| !firstName.trim() ||typeof lastName!=="string"||!lastName.trim()||role!=="player"){
+            return res.status(400).json({error: "Player information must be correct."});
+        }
+        if(!(await verifyPlayer(req.body))){
+            return res.status(403).json({error: "Only verified players can view their availability."});
+        }
+        const playerId=teamId.trim().toUpperCase();
+        const event=await db.query("SELECT id FROM events WHERE id=$1",[eId]);
+        if(event.rowCount==0)
+            return res.status(404).json({error:"Event was not found"});
+        const result=await db.query(
+            `SELECT event_id, player_id, status FROM event_availability WHERE event_id=$1 AND player_id=$2`,
+            [eId, playerId]
+        );
+        if(result.rowCount==0){
+            return res.json({
+                eventId: eId,
+                playerId: playerId,
+                status: null
+            });
+        }
+        res.json({
+            eventId:result.rows[0].event_id,
+            playerId:result.rows[0].player_id,
+            status:result.rows[0].status
+        });
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({error:"Player availability couldn't be retrieved. Try again."});
+    }
+});
+
 
 
 app.post("/api/roster/verify", async(req,res)=>{
