@@ -98,6 +98,17 @@ function EventAvailability({ event, user }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState('');
+    const [hasEnded, setHasEnded] = useState(true);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setHasEnded(
+                event.end
+                    ? new Date(event.end).getTime() <= Date.now()
+                    : false
+            );
+        }, 0);
+        return () => clearTimeout(timer);
+    }, [event.end]);
 
     useEffect(() => {
         let isMounted = true;
@@ -161,26 +172,32 @@ function EventAvailability({ event, user }) {
                         ? `Your response: ${availability === 'available' ? 'Available' : 'Unavailable'}`
                         : 'You have not responded yet.'}
             </p>
-            <div className="event-rsvp-actions">
-                <button
-                    className={`event-rsvp-button${availability === 'available' ? ' active' : ''}`}
-                    type="button"
-                    aria-pressed={availability === 'available'}
-                    disabled={isLoading || isSaving}
-                    onClick={() => saveAvailability('available')}
-                >
-                    Available
-                </button>
-                <button
-                    className={`event-rsvp-button${availability === 'unavailable' ? ' active' : ''}`}
-                    type="button"
-                    aria-pressed={availability === 'unavailable'}
-                    disabled={isLoading || isSaving}
-                    onClick={() => saveAvailability('unavailable')}
-                >
-                    Unavailable
-                </button>
-            </div>
+                {hasEnded ? (
+                    <p className="event-rsvp-status">
+                        RSVP closed because this event has already ended.
+                    </p>
+                ) : (
+                    <div className="event-rsvp-actions">
+                        <button
+                            className={`event-rsvp-button${availability === 'available' ? ' active' : ''}`}
+                            type="button"
+                            aria-pressed={availability === 'available'}
+                            disabled={isLoading || isSaving}
+                            onClick={() => saveAvailability('available')}
+                        >
+                                Available
+                        </button>
+                        <button
+                            className={`event-rsvp-button${availability === 'unavailable' ? ' active' : ''}`}
+                            type="button"
+                            aria-pressed={availability === 'unavailable'}
+                            disabled={isLoading || isSaving}
+                            onClick={() => saveAvailability('unavailable')}
+                        >
+                                Unavailable
+                        </button>
+                    </div>
+                    )}
             {isSaving && <p className="event-rsvp-status" role="status">Saving your response...</p>}
             {error && <p className="calendar-error" role="alert">{error}</p>}
         </section>
@@ -617,6 +634,11 @@ function TeamCalendar({ user }) {
                                             <h3>{event.title}</h3>
                                             <p className = "event-time"> {formatEventTime(event)}</p>
                                             <p>{event.description}</p>
+                                            {user.role === 'player' ? (
+                                                <EventAvailability event={event} user={user} />
+                                            ) : (
+                                                <EventAvailabilityResponses event={event} user={user} />
+                                            )}
                                         </>
                                     )}
                                 </article>
