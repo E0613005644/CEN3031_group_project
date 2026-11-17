@@ -719,6 +719,126 @@
     font-weight: 700;
 }
 
+.event-rsvp {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 103, 120, 0.2);
+}
+
+.event-rsvp h4,
+.event-rsvp p {
+    margin: 0;
+}
+
+.event-rsvp h4 {
+    color: #12343b;
+    font-size: 1rem;
+}
+
+.event-rsvp-status {
+    color: #59636d;
+    font-size: 0.9rem;
+}
+
+.event-rsvp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.event-rsvp-button {
+    padding: 9px 14px;
+    color: #006778;
+    background: #ffffff;
+    border: 1px solid #006778;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-rsvp-button.active {
+    color: #ffffff;
+    background: #006778;
+    box-shadow: 0 0 0 2px rgba(0, 103, 120, 0.16);
+}
+
+.event-rsvp-button:hover:not(:disabled) {
+    color: #12343b;
+    background: rgba(0, 165, 181, 0.12);
+}
+
+.event-rsvp-button:focus-visible {
+    outline: 3px solid rgba(215, 162, 42, 0.5);
+    outline-offset: 2px;
+}
+
+.event-rsvp-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.event-rsvp-groups {
+    display: grid;
+    gap: 12px;
+}
+
+.event-rsvp-group {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 103, 120, 0.16);
+    border-radius: 8px;
+}
+
+.event-rsvp-group h5 {
+    margin: 0;
+    color: #006778;
+    font-size: 0.95rem;
+}
+
+.event-rsvp-group h5 span {
+    color: #59636d;
+    font-weight: 600;
+}
+
+.event-rsvp-group ul {
+    display: grid;
+    gap: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-rsvp-group li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #12343b;
+    font-size: 0.9rem;
+}
+
+.event-rsvp-group li span:last-child {
+    color: #59636d;
+}
+
+.event-rsvp-no-response {
+    margin: 0;
+    padding: 12px;
+    color: #12343b;
+    background: rgba(215, 162, 42, 0.12);
+    border-left: 4px solid #d7a22a;
+    border-radius: 6px;
+}
+
+.event-rsvp-no-response strong {
+    color: #8a5810;
+}
+
 /* Keep secondary controls consistent with the calendar navigation hover treatment. */
 .team-calendar .create-event-button:hover,
 .team-calendar .submit-event-button:hover,
