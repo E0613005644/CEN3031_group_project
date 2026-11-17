@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import TeamCalendar from './TeamCalendar';
+import AddRosterMember from './AddRosterMember';
 
 /*checks whether the tab has a saved user*/
 function getSavedUser() {
@@ -130,6 +131,7 @@ function App() {
               </div>
               <span className = "calendar-status">{roleLabel}{user.position ? ` · ${user.position}` : ''}</span>
             </div>
+            {user.role === 'coach' && (<AddRosterMember user={user} />)}
             <TeamCalendar user={user} />
           </section>
         </div>
