@@ -218,9 +218,12 @@ app.put("/api/events/:id/availability", async(req,res)=>{
             return res.status(403).json({error: "Only verified players can update their status"});
         }
         const playerId=teamId.trim().toUpperCase();
-        const event=await db.query("SELECT id FROM events WHERE id=$1",[eId]);
+        const event=await db.query("SELECT id, end_time FROM events WHERE id=$1",[eId]);
         if(event.rowCount==0)
             return res.status(404).json({error:"Event was not found"});
+        if(new Date(event.rows[0].end_time).getTime() <= Date.now()) {
+            return res.status(409).json({error: "RSVPs are closed because this event has already ended."});
+        }
         const result=await db.query(
             `INSERT INTO event_availability(event_id,player_id,status)
             VALUES($1,$2,$3) 
