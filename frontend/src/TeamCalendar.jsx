@@ -10,7 +10,6 @@ import '@fullcalendar/react/themes/monarch/theme.css';
 import '@fullcalendar/react/themes/monarch/palettes/yellow.css'; //because yellow is unfortunately the closest to gold
 import './TeamCalendar.css'; //this is our (hannah and i's) custom styling
 
-const TOTAL_ROSTERED_PLAYERS = 79;
 
 //this function converts a JavaScript date object into a YYYY-MM-DD string used by the events
 function getDateKey(date) {
@@ -206,6 +205,7 @@ function EventAvailability({ event, user }) {
 
 function EventAvailabilityResponses({ event, user }) {
     const [responses, setResponses] = useState([]);
+    const [totalPlayers, setTotalPlayers] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -219,7 +219,8 @@ function EventAvailabilityResponses({ event, user }) {
             .then((response) => readApiResponse(response, 'Could not load player RSVPs.'))
             .then((result) => {
                 if (isMounted) {
-                    setResponses(result);
+                    setResponses(result.responses);
+                    setTotalPlayers(result.totalPlayers);
                     setError('');
                 }
             })
@@ -248,7 +249,7 @@ function EventAvailabilityResponses({ event, user }) {
         ...group,
         players: responses.filter((response) => response.status === group.status)
     }));
-    const noResponseCount = Math.max(0, TOTAL_ROSTERED_PLAYERS - responses.length);
+    const noResponseCount = Math.max(0, totalPlayers - responses.length);
 
     return (
         <section className="event-rsvp event-rsvp-responses" aria-label={`Player RSVPs for ${event.title}`}>

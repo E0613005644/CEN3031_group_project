@@ -1,0 +1,141 @@
+/* first handling the main button and the surrounding Jaguars-themed panel*/
+
+.roster-management {
+    margin-bottom: 1.5rem;
+}
+
+.roster-toggle-button, .roster-submit-button {
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    background: #006778;
+    color: white;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 103, 120, 0.2);
+}
+
+.roster-toggle-button:hover, .roster-submit-button:hover:not(:disabled) {
+    background: #004f5c;
+}
+
+.roster-form-panel {
+    padding: 1rem;
+    border: 1px solid #c9dde0;
+    border-top: 5px solid #d7a934;
+    border-radius: 14px;
+    background: #f8fbfb;
+}
+
+.roster-form-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.roster-form-header h2 {
+    margin: 0.25rem 0 0;
+    color: #17343c;
+    font-size: 1.25rem;
+}
+
+.roster-form-eyebrow {
+    margin: 0;
+    color: #4d9fb0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.roster-close-button {
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    border-radius: 50%;
+    background: #2f6f80;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* actual form fiels */
+
+.roster-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.roster-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: #17343c;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.roster-form input, .roster-form select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #a9c5ca;
+    border-radius: 8px;
+    padding: 0.7rem 0.8rem;
+    background: white;
+    color: #17343c;
+    font: inherit;
+}
+
+.roster-form input:focus, .roster-form select:focus {
+    border-color: #006778;
+    outline: 3px solid rgba(0, 103, 120, 0.2);
+}
+
+/*messages and the buttons*/
+
+.roster-error, .roster-success, .roster-form-actions {
+    grid-column: 1 / -1;
+}
+
+.roster-error {
+    margin: 0;
+    color: #a12622;
+    font-weight: 700;
+}
+
+.roster-success {
+    margin: 0.75rem 0 0;
+    color: #28613b;
+    font-weight: 700;
+}
+
+.roster-form-actions {
+    display: flex;
+    margin-top: 0.25rem;
+    gap: 0.75rem;
+}
+
+.roster-submit-button:disabled, .roster-cancel-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.roster-cancel-button {
+    border: 1px solid #2f6f80;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    background: white;
+    color: #2f6f80;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.roster-cancel-button:hover:not(:disabled) {
+    background: #eaf4f5;
+}

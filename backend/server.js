@@ -269,7 +269,13 @@ app.post("/api/events/:id/availability/responses", async(req,res)=>{
             position:row.position,
             status:row.status
         }));
-        res.json(responses);
+        //res.json(responses); replacing this line so that we count current players dynamically so the RSVP total stays accurate
+        const playerCountResult = await db.query (
+            `SELECT COUNT(*)::int AS total
+            FROM roster_members
+            WHERE role = 'player'`
+        );
+        res.json({responses, totalPlayers: playerCountResult.rows[0].total});
     }
     catch(error){
         console.error(error);
@@ -317,7 +323,45 @@ app.post("/api/events/:id/availability/saved", async(req,res)=>{
     }
 });
 
-
+app.post("/api/roster", async(req,res)=>{
+    try{
+        const { newTeamId, newFirstName, newLastName, newRole, newPosition } = req.body || {};
+        if (!(await verifyCoach(req.body))) {
+            return res.status(403).json({error: "Only verified coaches can add roster members."});
+        }
+            const requiredFields = [newTeamId, newFirstName, newLastName, newRole, newPosition];
+        if(requiredFields.some((value) => typeof value !== "string" || !value.trim()) || !["player", "coach"].includes(newRole)) {
+            return res.status(400).json({error: "Enter a team ID, name, role, and position."});
+        }
+        const normalizedTeamId = newTeamId.trim().toUpperCase();
+        const requiredIdPattern = newRole === "player" ? /^JAX-P\d{3}$/ : /^JAX-C\d{3}$/;
+        if (!requiredIdPattern.test(normalizedTeamId)) {
+            return res.status(400).json({error: newRole === "player" ? "Player IDs must use the same format JAX-P###" : "Coach IDs must use the same format JAX-C###"});
+        }
+        const result = await db.query(
+            `INSERT INTO roster_members (team_id, first_name, last_name, role, position, registered)
+            VALUES ($1, $2, $3, $4, $5, FALSE)
+            RETURNING team_id, first_name, last_name, role, position, registered`,
+            [normalizedTeamId, newFirstName.trim(), newLastName.trim(), newRole, newPosition.trim()]
+        );
+        const member = result.rows[0];
+        res.status(201).json({
+            teamId: member.team_id,
+            firstName: member.first_name,
+            lastName: member.last_name,
+            role: member.role,
+            position: member.position,
+            registered: member.registered
+        });
+    }
+    catch(error){
+        if(error.code === "23505") {
+            return res.status(409).json({error: "That team ID already belongs to another roster member."});
+        }
+        console.error(error);
+        res.status(500).json({error: "Roster member could not be added. Please try again."});
+    }
+});
 
 app.post("/api/roster/verify", async(req,res)=>{
     try{
