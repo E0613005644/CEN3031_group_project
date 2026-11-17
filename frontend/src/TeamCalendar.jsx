@@ -10,7 +10,7 @@ import '@fullcalendar/react/themes/monarch/theme.css';
 import '@fullcalendar/react/themes/monarch/palettes/yellow.css'; //because yellow is unfortunately the closest to gold
 import './TeamCalendar.css'; //this is our (hannah and i's) custom styling
 
-
+const TOTAL_ROSTERED_PLAYERS = 79;
 
 //this function converts a JavaScript date object into a YYYY-MM-DD string used by the events
 function getDateKey(date) {
@@ -91,6 +91,181 @@ async function readApiResponse(response, fallbackMessage) {
         throw new Error(result.error || fallbackMessage);
     }
     return result;
+}
+
+function EventAvailability({ event, user }) {
+    const [availability, setAvailability] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+        fetch(`/api/events/${event.id}/availability/saved`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        })
+            .then((response) => readApiResponse(response, 'Could not load your RSVP.'))
+            .then((result) => {
+                if (isMounted) {
+                    setAvailability(result.status);
+                    setError('');
+                }
+            })
+            .catch((loadError) => {
+                if (isMounted) {
+                    setError(loadError instanceof TypeError
+                        ? 'Could not connect to the server.'
+                        : loadError.message);
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [event.id, user]);
+
+    async function saveAvailability(status) {
+        setIsSaving(true);
+        setError('');
+        try {
+            const response = await fetch(`/api/events/${event.id}/availability`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...user, status })
+            });
+            const result = await readApiResponse(response, 'Your RSVP could not be saved.');
+            setAvailability(result.status);
+        } catch (saveError) {
+            setError(saveError instanceof TypeError
+                ? 'Could not connect to the server.'
+                : saveError.message);
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    return (
+        <section className="event-rsvp" aria-label={`RSVP for ${event.title}`}>
+            <h4>Player RSVP</h4>
+            <p className="event-rsvp-status" aria-live="polite">
+                {isLoading
+                    ? 'Loading your response...'
+                    : availability
+                        ? `Your response: ${availability === 'available' ? 'Available' : 'Unavailable'}`
+                        : 'You have not responded yet.'}
+            </p>
+            <div className="event-rsvp-actions">
+                <button
+                    className={`event-rsvp-button${availability === 'available' ? ' active' : ''}`}
+                    type="button"
+                    aria-pressed={availability === 'available'}
+                    disabled={isLoading || isSaving}
+                    onClick={() => saveAvailability('available')}
+                >
+                    Available
+                </button>
+                <button
+                    className={`event-rsvp-button${availability === 'unavailable' ? ' active' : ''}`}
+                    type="button"
+                    aria-pressed={availability === 'unavailable'}
+                    disabled={isLoading || isSaving}
+                    onClick={() => saveAvailability('unavailable')}
+                >
+                    Unavailable
+                </button>
+            </div>
+            {isSaving && <p className="event-rsvp-status" role="status">Saving your response...</p>}
+            {error && <p className="calendar-error" role="alert">{error}</p>}
+        </section>
+    );
+}
+
+function EventAvailabilityResponses({ event, user }) {
+    const [responses, setResponses] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+        fetch(`/api/events/${event.id}/availability/responses`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        })
+            .then((response) => readApiResponse(response, 'Could not load player RSVPs.'))
+            .then((result) => {
+                if (isMounted) {
+                    setResponses(result);
+                    setError('');
+                }
+            })
+            .catch((loadError) => {
+                if (isMounted) {
+                    setError(loadError instanceof TypeError
+                        ? 'Could not connect to the server.'
+                        : loadError.message);
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [event.id, user]);
+
+    const groups = [
+        { label: 'Available', status: 'available' },
+        { label: 'Unavailable', status: 'unavailable' }
+    ].map((group) => ({
+        ...group,
+        players: responses.filter((response) => response.status === group.status)
+    }));
+    const noResponseCount = Math.max(0, TOTAL_ROSTERED_PLAYERS - responses.length);
+
+    return (
+        <section className="event-rsvp event-rsvp-responses" aria-label={`Player RSVPs for ${event.title}`}>
+            <h4>Player responses</h4>
+            {isLoading && <p className="event-rsvp-status" role="status">Loading player responses...</p>}
+            {error && <p className="calendar-error" role="alert">{error}</p>}
+            {!isLoading && !error && (
+                <>
+                    <div className="event-rsvp-groups">
+                        {groups.map((group) => (
+                            <section className="event-rsvp-group" key={group.label}>
+                                <h5>{group.label} <span>({group.players.length})</span></h5>
+                                {group.players.length > 0 ? (
+                                    <ul>
+                                        {group.players.map((player) => (
+                                            <li key={player.playerId}>
+                                                <span>{player.firstName} {player.lastName}</span>
+                                                {player.position && <span>{player.position}</span>}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="event-rsvp-status">No players</p>
+                                )}
+                            </section>
+                        ))}
+                    </div>
+                    <p className="event-rsvp-no-response">
+                        Haven&apos;t responded: <strong>{noResponseCount}</strong>
+                    </p>
+                </>
+            )}
+        </section>
+    );
 }
 
 
