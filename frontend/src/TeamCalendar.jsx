@@ -287,7 +287,7 @@ function EventAvailabilityResponses({ event, user }) {
 }
 
 
-function TeamCalendar({ user }) {
+function TeamCalendar({ user, onEventsUpdated }) {
     const calendarRef = useRef(null);
     const [events, setEvents] = useState([]);
     const [calendarError, setCalendarError] = useState('');
@@ -408,6 +408,7 @@ function TeamCalendar({ user }) {
             });
             const result = await readApiResponse(response, 'The event could not be updated.');
             setEvents((current) => current.map((item) => item.id === result.id ? result : item).sort((a, b) => a.start.localeCompare(b.start)));
+            onEventsUpdated();
             setEditingEventId(null);
             setEditingEvent(null);
         } catch (error) {
@@ -437,6 +438,7 @@ function TeamCalendar({ user }) {
                 await readApiResponse(response, 'The event could not be deleted.');
             }
             setEvents((current) => current.filter((item) => item.id !== eventId));
+            onEventsUpdated();
             setEditingEventId(null);
             setEditingEvent(null);
         } catch (error) {
@@ -477,6 +479,7 @@ function TeamCalendar({ user }) {
             });
             const result = await readApiResponse(response, 'The event could not be created.');
             setEvents((current) => [...current, result].sort((a, b) => a.start.localeCompare(b.start)));
+            onEventsUpdated();
             setNewEvent({ title: '', eventType: 'practice', start: '', end: '', description: '' });
             setEndTimeEdited(false);
             setIsCreateFormOpen(false);
