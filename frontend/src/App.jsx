@@ -3,6 +3,131 @@ import './App.css';
 import TeamCalendar from './TeamCalendar';
 import AddRosterMember from './AddRosterMember';
 
+function getWeekBounds(date = new Date()) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  start.setDate(start.getDate() - start.getDay());
+
+  const end = new Date(start);
+  end.setDate(end.getDate() + 7);
+  return { start, end };
+}
+
+function formatEventTime(startValue, endValue) {
+  const start = new Date(startValue);
+  const timeOptions = { hour: 'numeric', minute: '2-digit' };
+  const startTime = start.toLocaleTimeString('en-US', timeOptions);
+
+  if (!endValue) {
+    return startTime;
+  }
+
+  const endTime = new Date(endValue).toLocaleTimeString('en-US', timeOptions);
+  return `${startTime} - ${endTime}`;
+}
+
+function WeeklyEvents({ refreshSignal }) {
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch('/api/events')
+      .then(async (response) => {
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          throw new Error('Could not load this week’s events. Make sure the backend API is running on port 5000.');
+        }
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Could not load this week’s events.');
+        }
+        if (!Array.isArray(result)) {
+          throw new Error('The events response was not in the expected format.');
+        }
+        return result;
+      })
+      .then((result) => {
+        if (isMounted) {
+          setEvents(result);
+          setError('');
+        }
+      })
+      .catch((loadError) => {
+        if (isMounted) {
+          setError(loadError instanceof TypeError
+            ? 'Could not connect to the server. Make sure the backend is running.'
+            : loadError.message);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refreshSignal]);
+
+  const { start: weekStart, end: weekEnd } = getWeekBounds();
+  const weekEndInclusive = new Date(weekEnd);
+  weekEndInclusive.setDate(weekEndInclusive.getDate() - 1);
+  const weekLabel = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${weekEndInclusive.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  const weeklyEvents = events.filter((event) => {
+    const startsAt = new Date(event.start);
+    const endsAt = new Date(event.end || event.start);
+    return !Number.isNaN(startsAt.getTime()) &&
+      !Number.isNaN(endsAt.getTime()) &&
+      startsAt < weekEnd &&
+      endsAt > weekStart;
+  });
+
+  return (
+    <section className="weekly-events" aria-labelledby="weekly-events-heading">
+      <div className="weekly-events-header">
+        <div>
+          <p className="dashboard-eyebrow">THIS WEEK</p>
+          <h2 id="weekly-events-heading">Team events</h2>
+        </div>
+        <span className="weekly-events-date-range">{weekLabel}</span>
+      </div>
+
+      {isLoading && <p className="weekly-events-message" role="status">Loading this week’s events…</p>}
+      {!isLoading && error && <p className="weekly-events-error" role="alert">{error}</p>}
+      {!isLoading && !error && weeklyEvents.length === 0 && (
+        <p className="weekly-events-empty">No events scheduled this week.</p>
+      )}
+      {!isLoading && !error && weeklyEvents.length > 0 && (
+        <ul className="weekly-events-list">
+          {weeklyEvents.map((event) => (
+            <li className="weekly-event-card" key={event.id}>
+              <time className="weekly-event-date" dateTime={event.start}>
+                {new Date(event.start).toLocaleDateString('en-US', {
+                  weekday: 'short',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </time>
+              <div className="weekly-event-details">
+                <h3>{event.title}</h3>
+                <p>{formatEventTime(event.start, event.end)}</p>
+                {event.description && <p className="weekly-event-description">{event.description}</p>}
+              </div>
+              <span className="weekly-event-type">
+                {event.eventType || 'Team event'}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
 /*checks whether the tab has a saved user*/
 function getSavedUser() {
   const savedUser = sessionStorage.getItem('jagsSyncUser');
@@ -30,6 +155,7 @@ function App() {
   const [user, setUser] = useState(getSavedUser); /*React will now not logout user after page refresh */
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [weeklyEventsRefreshSignal, setWeeklyEventsRefreshSignal] = useState(0);
 
   function handleInputChange(event) {
     const { name, value } = event.target; /*Input that the user changed and its new value*/
@@ -131,8 +257,9 @@ function App() {
               </div>
               <span className = "calendar-status">{roleLabel}{user.position ? ` · ${user.position}` : ''}</span>
             </div>
+            <WeeklyEvents refreshSignal={weeklyEventsRefreshSignal} />
             {user.role === 'coach' && (<AddRosterMember user={user} />)}
-            <TeamCalendar user={user} />
+            <TeamCalendar user={user} onEventsUpdated={() => setWeeklyEventsRefreshSignal((current) => current + 1)}/>
           </section>
         </div>
       </main>
